@@ -36,6 +36,6 @@ pie_charts  = ["hsc_s", "degree_t"]
 for feature in boxplots:
     utils.boxplot(df[feature], feature)
 for feature in histograms:
-    utils.histogram(df[feature], feature)
+    utils.histogram(df[feature], feature, bins=20)
 for feature in pie_charts:
     utils.pie_chart(mcle.inverse_transform(df)[feature], feature) # using the inverse transformation to get correct labels
