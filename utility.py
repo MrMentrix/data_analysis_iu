@@ -2,6 +2,13 @@ import pandas as pd
 import numpy as np
 import logging
 from sklearn.preprocessing import LabelEncoder
+import matplotlib.pyplot as plt
+import json
+
+config = json.load(open("config.json", "r"))
+
+fig_path = "./figures"
+plt.style.use('ggplot') # set matplotlib styling
 
 """
 This is a file for general utility, where some functions are stored that are used multiple times.
@@ -68,7 +75,9 @@ def _correlations(df, column, threshold):
     return corr_dict
 
 def corr(df=None, column=None, threshold=0.25, split_gender=False):
-    if not isinstance(df, pd.DataFrame): # to check validity of df
+    
+    # checking that all given parameters are valid
+    if not isinstance(df, pd.DataFrame):
         logging.warning("df is not a DataFrame")
         return None
 
@@ -109,3 +118,88 @@ def corr(df=None, column=None, threshold=0.25, split_gender=False):
         return general_corr, female_corr, male_corr
     else:
         return general_corr
+
+def boxplot(series=None, name=None):
+
+    series.dropna(inplace=True) # dropping all NaN values from series to avoid errors with boxplot
+
+    # checking that all given parameters are valid
+    if series is None or not isinstance(series, pd.Series):
+        logging.warning("Series is None or not a Series")
+        return None
+
+    if name is None or type(name) is not str:
+        logging.warning("Name is None or not a string")
+        return None
+
+    plt.clf()
+    plt.figure(figsize=(10, 10))
+    plt.boxplot(series)
+
+    # add formatting
+    plt.title(f"Boxplot of {name}")
+    # set y axis range
+    plt.ylim(series.min() - ((series.max()-series.min()) * 0.1), series.max() + ((series.max()-series.min()) * 0.1))
+    
+    # add yticks in 10% steps from min to max
+    plt.yticks(np.arange(series.min(), series.max() + ((series.max()-series.min()) * 0.1), (series.max()-series.min()) * 0.1))
+
+    plt.ylabel(f"{name}")
+    plt.xticks([])
+    plt.text(1, series.median(), f"Median: {round(series.median(), 2)}")
+    plt.text(1, series.min(), f"Min: {round(series.min(), 2)}")
+    plt.text(1, series.max(), f"Max: {round(series.max(), 2)}")
+
+    plt.savefig(f"{fig_path}/{name}_boxplot.png")
+
+    logging.info(f"Created boxplot of {name}")
+
+def histogram(series=None, name=None, bins=20):
+    
+    # checking that all given parameters are valid
+    if series is None or not isinstance(series, pd.Series):
+        logging.warning("Series is None or not a Series")
+        return None
+
+    if name is None or type(name) is not str:
+        logging.warning("Name is None or not a string")
+        return None
+
+    if bins is None or type(bins) is not int:
+        logging.warning("Bins is None or not an integer")
+        return None
+
+    plt.clf()
+    plt.figure(figsize=(10, 10))
+    plt.hist(series, bins=bins, color=config["colors"]["sky_blue"])
+
+    # add formatting
+    plt.title(f"Histogram of {name}")
+    plt.ylabel("Frequency")
+    plt.xlabel(f"{name}")
+
+    plt.savefig(f"{fig_path}/{name}_histogram.png")
+
+    logging.info(f"Created histogram of {name}")
+
+def pie_chart(series=None, name=None):
+    if series is None or not isinstance(series, pd.Series):
+        logging.warning("Series is None or not a Series")
+        return None
+
+    if name is None or type(name) is not str:
+        logging.warning("Name is None or not a string")
+        return None
+
+    plt.clf()
+    plt.figure(figsize=(10, 10))
+    plt.pie(series.value_counts(), autopct="%1.1f%%", textprops={"fontsize": 14, "color": "white", "weight": "bold"}, explode=[0.03 for i in range(len(series.value_counts()))])
+    # add formatting
+    plt.title(f"Pie Chart of {name}")
+    plt.legend(series.value_counts().index, loc="best")
+    # add percentage labels
+    plt.gca().set_aspect("equal")
+
+    plt.savefig(f"{fig_path}/{name}_pie_chart.png")
+
+    logging.info(f"Created pie chart of {name}")

@@ -34,6 +34,20 @@ After this, the dataset was manually studied to understand the features and thei
 - salary          | Salary offered by corporate to candidates
 
 
+## Getting a first impression of the data
+
+To get a first impression of the data, it is recommended to get some visual impressions. This helps to better understand the data and get a feeling for how certain features are distributed. To do this, the following figuers were created. You can find them in the "figures" folder.
+
+1. Boxplot and histogram of ssc_p
+2. Boxplot and histogram of hsc_p
+3. Boxplot and histogram of etest_p
+4. Boxplot and histogram of degree_p
+5. Boxplot and histogram of mba_p
+6. Boxplot and histogram of offered salary
+7. Pie Chart of hsc_s
+8. Pie Chart of degree_t
+
+
 ## Choosing Research Questions
 
 Now that the dataset has been chosen and studied, the next step is to choose research questions that can be answered with the data. The following research questions were chosen:
@@ -42,7 +56,8 @@ Now that the dataset has been chosen and studied, the next step is to choose res
 2. Which features correlate with the placement status?
 3. Is there a differnece in placement percentage between genders?
 4. Is there a difference in offered salary between genders?
-5. IS there a difference in educational background between genders?
+5. Is there a difference in educational background between genders?
+6. Does the employability test seem to be reliable, or is it irrelevant?
 
 All data will be enumerate before any analysis is performed. This is done to ensure that statistical tests can be performed on the data. After all statistical tests have been performed, the enumerized data will be turned back into its original form. This is done with the `multicolumnlabelencoder.py` file and the help of `sklearn.preprocessing.LabelEncoder`.
 
