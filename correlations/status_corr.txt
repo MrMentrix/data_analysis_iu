@@ -1,0 +1,20 @@
+General Correlations: 
+ssc_p           0.61155
+hsc_p           0.5001
+degree_p        0.48687
+workex          0.27014
+specialisation  -0.24004
+
+Female Correlations: 
+ssc_p           0.64095
+hsc_p           0.42599
+degree_p        0.39916
+workex          0.23575
+specialisation  -0.24498
+
+Male Correlations: 
+ssc_p           0.60873
+hsc_p           0.54699
+degree_p        0.58773
+workex          0.28242
+specialisation  -0.22734

@@ -1,5 +1,7 @@
 {
     "colors": {
         "sky_blue": "#87CEEB"
-    }
+    },
+    "hist_bins": 20,
+    "corr_threshold": 0.2
 }

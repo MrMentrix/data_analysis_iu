@@ -6,6 +6,9 @@ import logging
 import stats
 from sklearn.preprocessing import LabelEncoder
 import utility as utils
+import json
+
+config = json.load(open("config.json", "r"))
 
 # set logging config
 logging.basicConfig(format='%(asctime)s %(levelname)s %(filename)s:%(lineno)s %(message)s',
@@ -33,9 +36,23 @@ boxplots    = ["ssc_p", "hsc_p", "etest_p", "degree_p", "mba_p", "salary"]
 histograms  = ["ssc_p", "hsc_p", "etest_p", "degree_p", "mba_p", "salary"]
 pie_charts  = ["hsc_s", "degree_t"]
 
-for feature in boxplots:
-    utils.boxplot(df[feature], feature)
-for feature in histograms:
-    utils.histogram(df[feature], feature, bins=20)
-for feature in pie_charts:
-    utils.pie_chart(mcle.inverse_transform(df)[feature], feature) # using the inverse transformation to get correct labels
+if True:
+    for feature in boxplots:
+        percentile_dict = utils.percentiles(series=df[feature], percentiles=[0.95])
+        logging.debug(f"{feature} percentiles: {percentile_dict}")
+
+# remove salaries above 95th percentile, also keep missing values
+df = df[(df["salary"] <= 423250) | (df["salary"].isna())]
+
+if False:
+    for feature in boxplots:
+        utils.boxplot(df[feature], feature)
+    for feature in histograms:
+        utils.histogram(df[feature], feature, bins=config["hist_bins"])
+    for feature in pie_charts:
+        utils.pie_chart(mcle.inverse_transform(df)[feature], feature) # using the inverse transformation to get correct labels
+
+# calculate correlation for salary feature
+salary_corr = utils.corr(df, "salary", config["corr_threshold"], split_genders=True, file="salary_corr")
+status_corr = utils.corr(df, "status", config["corr_threshold"], split_genders=True, file="status_corr")
+utils.get_corr(df, "salary", None, split_genders=True, file="salary_corr", single=["etest_p"])
