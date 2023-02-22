@@ -1,6 +1,8 @@
 {
     "colors": {
-        "sky_blue": "#87CEEB"
+        "skyblue": "#87CEEB",
+        "pink": "#FFAAAA",
+        "lime": "#70E000"
     },
     "hist_bins": 20,
     "corr_threshold": 0.2

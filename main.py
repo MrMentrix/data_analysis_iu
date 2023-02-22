@@ -1,17 +1,13 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from tqdm import tqdm as t
 import logging
-import stats
-from sklearn.preprocessing import LabelEncoder
 import utility as utils
 import json
 
 config = json.load(open("config.json", "r"))
 
 # set logging config
-logging.basicConfig(format='%(asctime)s %(levelname)s %(filename)s:%(lineno)s %(message)s',
+logging.basicConfig(format='%(asctime)s %(levelname)s %(funcName)s %(filename)s:%(lineno)s %(message)s',
                     datefmt="%H:%M:%S",
                     level=logging.INFO)
 df = pd.read_csv("Placement_Data_Full_Class.csv")   # reading the data
@@ -44,7 +40,7 @@ if True:
 # remove salaries above 95th percentile, also keep missing values
 df = df[(df["salary"] <= 423250) | (df["salary"].isna())]
 
-if False:
+if True:
     for feature in boxplots:
         utils.boxplot(df[feature], feature)
     for feature in histograms:
@@ -52,7 +48,18 @@ if False:
     for feature in pie_charts:
         utils.pie_chart(mcle.inverse_transform(df)[feature], feature) # using the inverse transformation to get correct labels
 
+if True:
 # calculate correlation for salary feature
-salary_corr = utils.corr(df, "salary", config["corr_threshold"], split_genders=True, file="salary_corr")
-status_corr = utils.corr(df, "status", config["corr_threshold"], split_genders=True, file="status_corr")
-utils.get_corr(df, "salary", None, split_genders=True, file="salary_corr", single=["etest_p"])
+    salary_corr = utils.corr(df, "salary", config["corr_threshold"], split_genders=True, file="salary_corr")
+    status_corr = utils.corr(df, "status", config["corr_threshold"], split_genders=True, file="status_corr")
+    utils.get_corr(df, "salary", True, "salary_corr", ["degree_p", "etest_p", "mba_p", "ssc_p", "workex"])
+
+    # get covariance of ["etest_p", "mba_p", "degree_p", "ssc_p"] and "salary"/"status" using pandas
+    utils.cov(df, "salary", ["etest_p", "mba_p", "degree_p", "ssc_p"], True, "salary_cov")
+    utils.cov(df, "status", ["etest_p", "mba_p", "degree_p", "ssc_p"], True, "status_cov")
+
+    utils.scatter(df, ["salary", "etest_p"], "salary", True)
+
+if True:
+    for column in df.columns:
+        utils.gender_plot(df, column, f"{column}")

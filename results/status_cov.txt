@@ -1,0 +1,17 @@
+General Covariances:
+etest_p         0.75
+mba_p           0.19
+degree_p        1.69
+ssc_p           3.12
+
+Female Covariances:
+etest_p         0.0
+mba_p           -0.05
+degree_p        1.57
+ssc_p           3.62
+
+Male Covariances:
+etest_p         1.11
+mba_p           0.44
+degree_p        1.84
+ssc_p           2.92

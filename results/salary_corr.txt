@@ -1,13 +1,20 @@
 General Correlations: 
 etest_p         0.26302
 mba_p           0.22778
+degree_p        0.0731
+ssc_p           0.18219
+workex          0.02514
 
 Female Correlations: 
 ssc_p           0.23786
 degree_p        0.21135
+mba_p           0.2137
 etest_p         0.15565
+workex          0.06137
 
 Male Correlations: 
 ssc_p           0.21676
 etest_p         0.29315
 mba_p           0.31887
+degree_p        0.03677
+workex          -0.01675
